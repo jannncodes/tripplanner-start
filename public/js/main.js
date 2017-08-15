@@ -61,31 +61,6 @@ $(function initializeMap (){
     drawMarker('activity', [41.8675766, -87.6162267])
 });
 
-// //Page Setup
-// hotels.forEach(function(hotel) {
-//   let option = $('<option></option').text(hotel.name);
-//   $('#hotel-choices').append(option);
-// });
-
-// restaurants.forEach(function(restaurant) {
-//   let option = $('<option></option').text(restaurant.name);
-//   $('#restaurant-choices').append(option);
-// });
-
-// activities.forEach(function(activity) {
-//   let option = $('<option></option').text(activity.name);
-//   $('#activity-choices').append(option);
-// });
-
-// //Add hotel
-// $('.hotel').on('click', '.btn', function () {
-//   let selectedHotel = $('.hotel select').val();
-//   $('#hotel-title').text(selectedHotel);
-// });
-
-// // //Delete item
-// // $('.itinerary-item').on('click', '.btn', function () {
-
-// // });
 
 insertSelectPanel(hotels, restaurants, activities);
+setBlankItinerary();
