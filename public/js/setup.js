@@ -1,10 +1,11 @@
 const itinerary = {
-  dayOne: {
-    hotel: '',
-    restaurants: {},
-    activities: {},
-  },
 };
+
+const Day = function () {
+    this.hotel = '';
+    this.restaurants = {};
+    this.activities = {};
+}
 
 itinerary.addListItems = function (day, category) {
   let finalStr = '';
@@ -14,12 +15,17 @@ itinerary.addListItems = function (day, category) {
   return finalStr;
 };
 
-itinerary.removeListItems = function (category, itemToDelete) {
+itinerary.addDay = function () {
+  numDays++;
+  itinerary[numDays] = new Day();
 
-};
+}
 
+let numDays = 1;
 
-const currentDay = itinerary.dayOne;
+itinerary[numDays] = new Day();
+
+const currentDay = itinerary[1];
 
 function insertSelectPanel (hotels, restaurants, activities) {
   $('#options-panel').empty();
@@ -92,6 +98,7 @@ function insertSelectPanel (hotels, restaurants, activities) {
   $('#itinerary').on('click', '.remove', function () {
     if ($(this).parent().is('#delete-hotel')) {
       $(this).parent().remove();
+      currentDay.hotel = '';
     }
     else {
       let removeItem = ($(this).parent().text().slice(1, -4));
@@ -105,12 +112,27 @@ function insertSelectPanel (hotels, restaurants, activities) {
       setDayItinerary(currentDay);
     }
   });
+
+  $('.day-buttons').on('click', '#day-add', function () {
+    itinerary.addDay();
+    let newButton = `<button class="btn btn-circle day-btn">${numDays}</button>`
+    $('.day-buttons').append(newButton);
+  });
+
 }
 
 
 
 function setBlankItinerary () {
   $('#itinerary').empty();
+  $('.day-buttons').html(`
+    <button class="btn btn-circle day-btn">1</button>
+    <button class="btn btn-circle day-btn" id="day-add">+</button>
+  `);
+  $('#day-title').html(`
+    <span>Day 1</span>
+    <button class="btn btn-xs btn-danger remove btn-circle">x</button>
+  `);
   $('#itinerary').html(`
     <div>
       <h4>My Hotel</h4>
@@ -135,8 +157,16 @@ function setBlankItinerary () {
     </div>`);
 }
 
-function setDayItinerary ( day ) {
+function setDayItinerary ( day, dayTitle ) {
   $('#itinerary').empty();
+  $('.day-buttons').html(`
+    <button class="btn btn-circle day-btn">1</button>
+    <button class="btn btn-circle day-btn" id="day-add">+</button>
+  `);
+  $('#day-title').html(`
+    <span>${dayTitle}</span>
+    <button class="btn btn-xs btn-danger remove btn-circle">x</button>
+  `);
   $('#itinerary').html(`
     <div>
       <h4>My Hotel</h4>
