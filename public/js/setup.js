@@ -1,10 +1,23 @@
 const itinerary = {
   dayOne: {
     hotel: '',
-    restaurants: [],
-    activities: [],
+    restaurants: {},
+    activities: {},
   },
-}
+};
+
+itinerary.addListItems = function (day, category) {
+  let finalStr = '';
+  for(var key in day[category]) {
+    finalStr += day[category][key];
+  }
+  return finalStr;
+};
+
+itinerary.removeListItems = function (category, itemToDelete) {
+
+};
+
 
 const currentDay = itinerary.dayOne;
 
@@ -57,33 +70,43 @@ function insertSelectPanel (hotels, restaurants, activities) {
   });
 
   $('.restaurant').on('click', '.btn', function () {
-    let selectedRestaurant = $('.restaurant select').val() + deleteButton()
+    let selectedRestaurant = $('.restaurant select').val()
 
     //update state
-    currentDay.restaurants.push( selectedRestaurant );
+    currentDay.restaurants[selectedRestaurant] = `<li class="itinerary-item" value="restaurants"> ${selectedRestaurant}` + '  ' + `${deleteButton()} </li>`;
 
     //render new state
     setDayItinerary( currentDay );
   });
 
   $('.activity').on('click', '.btn', function () {
-    let selectedActivity = $('.activity select').val() + deleteButton()
+    let selectedActivity = $('.activity select').val()
 
     //update state
-    currentDay.activities.push( selectedActivity );
+    currentDay.activities[selectedActivity] = `<li class="itinerary-item" value="activities"> ${selectedActivity}` + '  ' + `${deleteButton()} </li>`;
 
     //render new state
     setDayItinerary( currentDay );
   });
 
-  // $('#itinerary').on('click', '.remove', function () {
-  //   $(this).parent().remove();
-  //   //update state
-  //   currentDay.hotel = '';
-  //   //render new state
-  //   setDayItinerary(currentDay);
-  // });
+  $('#itinerary').on('click', '.remove', function () {
+    if ($(this).parent().is('#delete-hotel')) {
+      $(this).parent().remove();
+    }
+    else {
+      let removeItem = ($(this).parent().text().slice(1, -4));
+      let category = ($(this).parent().attr('value'));
+
+      //update state
+      delete currentDay[category][removeItem];
+
+
+      // render new state
+      setDayItinerary(currentDay);
+    }
+  });
 }
+
 
 
 function setBlankItinerary () {
@@ -119,24 +142,20 @@ function setDayItinerary ( day ) {
       <h4>My Hotel</h4>
       <ul class="list-group">
         <div class="itinerary-item">
-          <li> ${day.hotel} </li>
+          <li id='delete-hotel'> ${day.hotel} </li>
         </div>
       </ul>
     </div>
     <div>
       <h4>My Restaurants</h4>
       <ul class="list-group">
-        <div class="itinerary-item">
-          <li> ${day.restaurants} </li>
-        </div>
+         ${Object.keys(day.restaurants).length ? itinerary.addListItems(day, 'restaurants') : ''}
       </ul>
     </div>
     <div>
       <h4>My Activities</h4>
       <ul class="list-group">
-        <div class="itinerary-item">
-          <li> ${day.activities} </li>
-        </div>
+        ${Object.keys(day.activities).length ? itinerary.addListItems(day, 'activities') : ''}
       </ul>
     </div>`);
 }

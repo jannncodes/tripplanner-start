@@ -11,6 +11,10 @@ body {
   min-width: -webkit-min-content;
 }
 
+li {
+  list-style: none;
+}
+
 #app {
   border-left: 2px solid lighten($medium-brown, 25%);
   border-right: 2px solid lighten($medium-brown, 25%);
